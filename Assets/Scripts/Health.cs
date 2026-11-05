@@ -23,4 +23,11 @@ public class Health : MonoBehaviour
         if (current <= 0) GameManager.Instance.PlayerDied();   // <= 0, because a hit of 2 can skip 0
         return true;
     }
+
+    public void Restore(float protection)
+    {
+        current = max;
+        invulnerableUntil = Time.time + protection;
+        GameManager.Instance.UpdateUI();
+    }
 }

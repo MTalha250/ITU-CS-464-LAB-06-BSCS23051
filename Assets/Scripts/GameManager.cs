@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -5,8 +6,10 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    [SerializeField] int targetScore = 10;
+    [SerializeField] int targetScore = 10, lives = 3;
+    [SerializeField] float respawnDelay = 0.6f, spawnProtection = 1.5f;
     [SerializeField] Health player;
+    [SerializeField] Transform respawnPoint;
     [SerializeField] TMP_Text scoreText, livesText;
     [SerializeField] GameObject winPanel, losePanel;
     int score;
@@ -24,10 +27,26 @@ public class GameManager : MonoBehaviour
     public void UpdateUI()
     {
         scoreText.text = $"Score: {score} / {targetScore}";
-        livesText.text = $"Health: {Mathf.Max(player.Current, 0)} / {player.Max}";
+        livesText.text = $"Lives: {lives}   Health: {Mathf.Max(player.Current, 0)} / {player.Max}";
     }
 
-    public void PlayerDied() => Lose();
+    public void PlayerDied()
+    {
+        lives--;
+        UpdateUI();
+        if (lives <= 0) Lose();
+        else StartCoroutine(Respawn());
+    }
+
+    IEnumerator Respawn()
+    {
+        // wait a beat, so the knockback queued by the hit doesn't land on the respawned player
+        yield return new WaitForSeconds(respawnDelay);
+        Rigidbody body = player.GetComponent<Rigidbody>();
+        body.position = respawnPoint.position;
+        body.linearVelocity = Vector3.zero;
+        player.Restore(spawnProtection);
+    }
 
     void Win()
     {
