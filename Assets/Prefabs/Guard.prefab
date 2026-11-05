@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6870380442217475058}
   - component: {fileID: 4425817290770289508}
   - component: {fileID: 2131664159512604537}
+  - component: {fileID: 5665649755327763158}
   m_Layer: 0
   m_Name: Guard
   m_TagString: Untagged
@@ -161,6 +162,24 @@ MonoBehaviour:
   speed: 2.6
   waitTime: 0
   turnSpeed: 360
+--- !u!114 &5665649755327763158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850776299324609619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 193ef6fd6836241bc839dbe834c232bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hazard
+  damage: 1
+  knockback: 6
+  restTime: 0
+  warnTime: 0.7
+  strikeTime: 0.4
+  warning: {fileID: 0}
 --- !u!1 &3489916657222625263
 GameObject:
   m_ObjectHideFlags: 0
