@@ -4,6 +4,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField] int max = 3;
     [SerializeField] float iFrames = 1f;
+    public bool shielded;
     int current;
     float invulnerableUntil;
 
@@ -16,6 +17,7 @@ public class Health : MonoBehaviour
     {
         if (current <= 0 || Time.time < invulnerableUntil) return false;
         invulnerableUntil = Time.time + iFrames;
+        if (shielded) { shielded = false; return false; }
         current -= amount;
         GameManager.Instance.UpdateUI();
         if (current <= 0) GameManager.Instance.PlayerDied();   // <= 0, because a hit of 2 can skip 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,8 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     InputAction moveAction;
     Vector3 input;
+    float speedMultiplier = 1f;
+    Coroutine boost;
 
     void Awake()
     {
@@ -21,5 +24,19 @@ public class PlayerController : MonoBehaviour
         input = Vector3.ClampMagnitude(new Vector3(move.x, 0f, move.y), 1f);
     }
 
-    void FixedUpdate() => rb.AddForce(input * moveForce);
+    void FixedUpdate() => rb.AddForce(input * moveForce * speedMultiplier);
+
+    public void BoostSpeed(float multiplier, float seconds)
+    {
+        if (boost != null) StopCoroutine(boost);   // a second pickup restarts the timer
+        boost = StartCoroutine(Boost(multiplier, seconds));
+    }
+
+    IEnumerator Boost(float multiplier, float seconds)
+    {
+        speedMultiplier = multiplier;
+        yield return new WaitForSeconds(seconds);
+        speedMultiplier = 1f;
+        boost = null;
+    }
 }
